@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="bg"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Прекъсвания на тока — Арчар</title>
+<style>
+:root{--bg:#f6f5f2;--card:#fff;--ink:#1f2328;--mut:#6b7280;--red:#d9534f;--blue:#3b7dd8;--green:#2e9d63}
+@media(prefers-color-scheme:dark){:root{--bg:#16181c;--card:#1f2228;--ink:#e8e8e8;--mut:#9aa0a6}}
+body{margin:0;font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+main{max-width:1000px;margin:auto;padding:20px}
+h1{margin:.2em 0 0;font-size:1.6em} h2{font-size:1.1em;margin:0 0 .6em}
+.muted{color:var(--mut)} .card{background:var(--card);border-radius:12px;padding:16px 18px;margin:14px 0;box-shadow:0 1px 3px #0001}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.kpi{background:var(--card);border-radius:12px;padding:12px 14px;box-shadow:0 1px 3px #0001}
+.kpi b{display:block;font-size:1.5em} .kpi span{color:var(--mut);font-size:.85em}
+.kpi.red b{color:var(--red)} .kpi.blue b{color:var(--blue)} .kpi.green b{color:var(--green)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:14px}
+.grid2 .card{margin:0}
+.chart{width:100%;height:auto;max-height:230px} .chart .v{font-size:10px;text-anchor:middle;fill:var(--mut)}
+.chart .l{font-size:10px;text-anchor:middle;fill:var(--mut)}
+table{width:100%;border-collapse:collapse;font-size:.9em} th,td{text-align:left;padding:6px 8px;border-bottom:1px solid #8882}
+tr.un td:first-child{border-left:3px solid var(--red)} tr.pl td:first-child{border-left:3px solid var(--blue)}
+.alert{background:#d9534f22;border:1px solid var(--red);border-radius:12px;padding:10px 14px;margin:12px 0}
+.wrap{overflow-x:auto}
+</style></head><body><main>
+<h1>Прекъсвания на тока — с. Арчар</h1>
+<div class="muted">По данни от сайта на ЕРМ Запад, проверявани автоматично. Наблюдение от —.
+ Успешни проверки: 0 от 0.</div>
+
+<div class="kpis" style="margin-top:14px"><div class='kpi '><b>0</b><span>прекъсвания общо</span></div><div class='kpi '><b>0</b><span>за последните 30 дни</span></div><div class='kpi red'><b>0</b><span>непланирани</span></div><div class='kpi blue'><b>0</b><span>планирани</span></div><div class='kpi '><b>0.0 ч</b><span>общо без ток</span></div><div class='kpi '><b>0.0 ч</b><span>средно на прекъсване</span></div><div class='kpi green'><b>—</b><span>непланирани при спокойно време</span></div></div>
+<div class="grid2" style="margin-top:14px">
+<div class="card"><h2>Непланирани прекъсвания по месеци</h2><p class='muted'>Няма данни.</p></div>
+<div class="card"><h2>Часове без ток по месеци</h2><p class='muted'>Няма данни.</p></div>
+<div class="card"><h2>В кой час започват (непланирани)</h2><svg viewBox='0 0 460 190' class='chart' role='img'><rect x='7.0' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>00: 0</title></rect><text x='14.375' y='180' class='l'>00</text><rect x='25.75' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>01: 0</title></rect><rect x='44.5' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>02: 0</title></rect><rect x='63.25' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>03: 0</title></rect><text x='70.625' y='180' class='l'>03</text><rect x='82.0' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>04: 0</title></rect><rect x='100.75' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>05: 0</title></rect><rect x='119.5' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>06: 0</title></rect><text x='126.875' y='180' class='l'>06</text><rect x='138.25' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>07: 0</title></rect><rect x='157.0' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>08: 0</title></rect><rect x='175.75' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>09: 0</title></rect><text x='183.125' y='180' class='l'>09</text><rect x='194.5' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>10: 0</title></rect><rect x='213.25' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>11: 0</title></rect><rect x='232.0' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>12: 0</title></rect><text x='239.375' y='180' class='l'>12</text><rect x='250.75' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>13: 0</title></rect><rect x='269.5' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>14: 0</title></rect><rect x='288.25' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>15: 0</title></rect><text x='295.625' y='180' class='l'>15</text><rect x='307.0' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>16: 0</title></rect><rect x='325.75' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>17: 0</title></rect><rect x='344.5' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>18: 0</title></rect><text x='351.875' y='180' class='l'>18</text><rect x='363.25' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>19: 0</title></rect><rect x='382.0' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>20: 0</title></rect><rect x='400.75' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>21: 0</title></rect><text x='408.125' y='180' class='l'>21</text><rect x='419.5' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>22: 0</title></rect><rect x='438.25' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>23: 0</title></rect></svg></div>
+<div class="card"><h2>Ден от седмицата (непланирани)</h2><svg viewBox='0 0 460 190' class='chart' role='img'><rect x='7.0' y='164.0' width='60.28571428571429' height='0.0' rx='2' fill='#d9534f'><title>Пн: 0</title></rect><text x='37.142857142857146' y='180' class='l'>Пн</text><rect x='71.28571428571429' y='164.0' width='60.28571428571429' height='0.0' rx='2' fill='#d9534f'><title>Вт: 0</title></rect><text x='101.42857142857144' y='180' class='l'>Вт</text><rect x='135.57142857142858' y='164.0' width='60.28571428571429' height='0.0' rx='2' fill='#d9534f'><title>Ср: 0</title></rect><text x='165.71428571428572' y='180' class='l'>Ср</text><rect x='199.8571428571429' y='164.0' width='60.28571428571429' height='0.0' rx='2' fill='#d9534f'><title>Чт: 0</title></rect><text x='230.00000000000003' y='180' class='l'>Чт</text><rect x='264.14285714285717' y='164.0' width='60.28571428571429' height='0.0' rx='2' fill='#d9534f'><title>Пт: 0</title></rect><text x='294.28571428571433' y='180' class='l'>Пт</text><rect x='328.42857142857144' y='164.0' width='60.28571428571429' height='0.0' rx='2' fill='#d9534f'><title>Сб: 0</title></rect><text x='358.5714285714286' y='180' class='l'>Сб</text><rect x='392.7142857142858' y='164.0' width='60.28571428571429' height='0.0' rx='2' fill='#d9534f'><title>Нд: 0</title></rect><text x='422.85714285714295' y='180' class='l'>Нд</text></svg></div>
+<div class="card"><h2>Продължителност</h2><svg viewBox='0 0 460 190' class='chart' role='img'><rect x='7' y='164.0' width='66' height='0.0' rx='2' fill='#6c7ae0'><title>&lt;1 ч: 0</title></rect><text x='40.0' y='180' class='l'>&lt;1 ч</text><rect x='77' y='164.0' width='66' height='0.0' rx='2' fill='#6c7ae0'><title>1–2 ч: 0</title></rect><text x='110.0' y='180' class='l'>1–2 ч</text><rect x='147' y='164.0' width='66' height='0.0' rx='2' fill='#6c7ae0'><title>2–4 ч: 0</title></rect><text x='180.0' y='180' class='l'>2–4 ч</text><rect x='217' y='164.0' width='66' height='0.0' rx='2' fill='#6c7ae0'><title>4–8 ч: 0</title></rect><text x='250.0' y='180' class='l'>4–8 ч</text><rect x='287' y='164.0' width='66' height='0.0' rx='2' fill='#6c7ae0'><title>&gt;8 ч: 0</title></rect><text x='320.0' y='180' class='l'>&gt;8 ч</text></svg></div>
+<div class="card"><h2>Най-често засегнати трафопостове</h2>
+<table><tr><td class=muted>Няма данни</td></tr></table></div>
+</div>
+<div class="card"><h2>Всички прекъсвания</h2><div class="wrap"><table>
+<tr><th>Дата</th><th>Начало</th><th>Край*</th><th>Часа</th><th>Вид</th><th>ТП</th><th>Време (±2 ч от началото)</th></tr>
+<tr><td colspan=7 class=muted>Все още няма записани прекъсвания.</td></tr>
+</table></div>
+<p class="muted">* Краят е оценка: моментът, в който прекъсването изчезва от сайта (точност ± половин интервал между проверките),
+или обявеното от ЕРМ време, ако попада в този интервал. „⚠️“ = пориви ≥50 км/ч, валеж ≥5 мм, сняг или гръмотевици
+(данни Open-Meteo). Прекъсвания, които не са публикувани на сайта на ЕРМ, не са включени.</p></div>
+<p class="muted">Генерирано на 20.11.2026 00:45.</p>
+</main></body></html>
