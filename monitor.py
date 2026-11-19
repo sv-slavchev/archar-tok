@@ -50,6 +50,13 @@ def fetch(obstina=OBSTINA):
     return parse(r.status_code, r.text)
 
 
+def save_debug(code, text):
+    """Пази началото на неочакван отговор, за да се види какво връща сайтът."""
+    os.makedirs(DATA, exist_ok=True)
+    with open(os.path.join(DATA, "last_response.txt"), "w", encoding="utf-8") as f:
+        f.write(f"{now_str()}  HTTP {code}  дължина {len(text or '')}\n\n{(text or '')[:3000]}")
+
+
 def parse(code, text):
     body = (text or "").strip()
     if code != 200:
@@ -60,13 +67,20 @@ def parse(code, text):
         return "empty", []
     if body.startswith("<"):
         # HTML вместо JSON: защитата е блокирала заявката (или общината няма събития)
+        save_debug(code, text)
         low = body.lower()
         if "incapsula" in low or "_incapsula_resource" in low or "captcha" in low:
             return "blocked", []
         return "empty", []
-    try:
-        obj = json.loads(body)
-    except json.JSONDecodeError:
+    obj = None
+    for cand in (body.lstrip("﻿"), body[body.find("{"): body.rfind("}") + 1]):
+        try:
+            obj = json.loads(cand)
+            break
+        except (json.JSONDecodeError, ValueError):
+            continue
+    if obj is None:
+        save_debug(code, text)
         return "error:badjson", []
     items = obj.values() if isinstance(obj, dict) else obj
     recs = []
