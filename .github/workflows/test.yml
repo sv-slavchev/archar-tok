@@ -1,0 +1,27 @@
+name: Тест с друга община
+
+on:
+  workflow_dispatch:
+    inputs:
+      obstina:
+        description: "Код на община (напр. SOF28 = Нови Искър, SFO39 = Самоков)"
+        default: "SOF28"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: Проверка (без запис в хранилището)
+        env:
+          ERM_OBSTINA: ${{ inputs.obstina }}
+        run: |
+          python monitor.py
+          echo "----- намерени прекъсвания -----"
+          head -15 data/outages.csv
+          echo "----- суров отговор (ако има грешка) -----"
+          cat data/last_response.txt 2>/dev/null || echo "няма грешки"
