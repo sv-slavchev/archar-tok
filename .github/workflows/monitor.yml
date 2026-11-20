@@ -2,8 +2,9 @@ name: Проверка за прекъсвания
 
 on:
   schedule:
-    - cron: "7,37 * * * *"
-  workflow_dispatch: {}
+    - cron: "7,37 * * * *"     # редовна проверка на всеки 30 минути
+    - cron: "22,52 * * * *"    # допълнителна — само докато тече прекъсване (→ на всеки 15 мин)
+  workflow_dispatch: {}         # ръчно пускане от раздел Actions
 
 permissions:
   contents: write
@@ -22,10 +23,18 @@ jobs:
           python-version: "3.12"
       - run: pip install requests
       - name: Проверка на сайта
-        run: python monitor.py
+        id: mon
+        run: |
+          if [ "${{ github.event.schedule }}" = "22,52 * * * *" ]; then
+            python monitor.py --if-open
+          else
+            python monitor.py
+          fi
       - name: Отчет
+        if: steps.mon.outputs.skipped != 'true'
         run: python report.py
       - name: Запис на данните
+        if: steps.mon.outputs.skipped != 'true'
         run: |
           git config user.name "outage-bot"
           git config user.email "outage-bot@users.noreply.github.com"
