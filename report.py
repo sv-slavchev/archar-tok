@@ -189,8 +189,14 @@ def main():
     ok_runs = [r for r in runs if r["status"] in ("ok", "empty")]
     per_day = Counter(dt(r["checked_at"]).strftime("%Y-%m-%d") for r in ok_runs if dt(r["checked_at"]))
     last = runs[-1] if runs else None
+    streets = read_json(os.path.join(DATA, "tps_streets.json"), {})
+    for c, names in streets.items():
+        if c in tps:
+            tps[c] = {**tps[c], "streets": names}
+    village = read_json(os.path.join(DATA, "village.json"), {})
     data = {
         "generated": iso(now),
+        "outline": village.get("outline"),
         "city": CITY, "obstina": OBSTINA_NAME,
         "first_check": iso(dt(runs[0]["checked_at"])) if runs else None,
         "last_check": {"at": iso(dt(last["checked_at"])), "status": last["status"]} if last else None,
