@@ -24,7 +24,7 @@ OUTAGES = os.path.join(DATA, "outages.csv")
 RUNS = os.path.join(DATA, "runs.csv")
 
 FIELDS = ["key", "ceo", "city", "type", "begin", "expected_end",
-          "first_seen", "last_seen", "gone_at", "status"]
+          "first_seen", "last_seen", "gone_at", "status", "first_expected_end"]
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/130.0 Safari/537.36")
 
@@ -93,8 +93,70 @@ def parse(code, text):
             "type": (v.get("typedist") or "").strip(),
             "begin": (v.get("begin_event") or "").strip(),
             "expected_end": (v.get("end_event") or "").strip(),
+            "_geo": geometry(v),
         })
     return ("ok" if recs else "empty"), recs
+
+
+# ---- очертания на зоната на всеки трафопост (за картата) ---------------------
+def _hull(pts):
+    pts = sorted(set(pts))
+    if len(pts) < 3:
+        return pts
+    def cross(o, a, b):
+        return (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0])
+    lower, upper = [], []
+    for p in pts:
+        while len(lower) >= 2 and cross(lower[-2], lower[-1], p) <= 0:
+            lower.pop()
+        lower.append(p)
+    for p in reversed(pts):
+        while len(upper) >= 2 and cross(upper[-2], upper[-1], p) <= 0:
+            upper.pop()
+        upper.append(p)
+    return lower[:-1] + upper[:-1]
+
+
+def geometry(v):
+    try:
+        lat, lon = float(v.get("lat")), float(v.get("lon"))
+    except (TypeError, ValueError):
+        return None
+    pts = []
+    for k, q in (v.get("points") or {}).items():
+        if k != "cnt" and isinstance(q, dict):
+            try:
+                pts.append((float(q["lat"]), float(q["lon"])))
+            except (KeyError, TypeError, ValueError):
+                pass
+    if pts:
+        # някои точки в системата на ЕРМ са с грешни координати (на десетки км) — махаме ги
+        mlat = sorted(p[0] for p in pts)[len(pts) // 2]
+        mlon = sorted(p[1] for p in pts)[len(pts) // 2]
+        pts = [p for p in pts if ((p[0] - mlat) * 111) ** 2 + ((p[1] - mlon) * 80.5) ** 2 <= 1.44]
+    hull = [[round(a, 5), round(b, 5)] for a, b in _hull(pts)]
+    return {"lat": round(lat, 5), "lon": round(lon, 5), "hull": hull if len(hull) >= 3 else []}
+
+
+def save_geometry(recs):
+    path = os.path.join(DATA, "tps.json")
+    tps = {}
+    if os.path.exists(path):
+        with open(path, encoding="utf-8") as f:
+            tps = json.load(f)
+    changed = False
+    for r in recs:
+        g = r.get("_geo")
+        if not g or not r["ceo"]:
+            continue
+        old = tps.get(r["ceo"])
+        # пазим най-подробното очертание, което сме виждали
+        if old is None or len(g["hull"]) > len(old.get("hull", [])):
+            tps[r["ceo"]] = {"city": r["city"], **g}
+            changed = True
+    if changed:
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(tps, f, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
 
 
 def load():
@@ -138,8 +200,11 @@ def update(rows, status, recs, ts):
         seen.add(key)
         row = rows.get(key)
         if row is None:
-            row = {**r, "key": key, "first_seen": ts, "gone_at": ""}
+            row = {k: v for k, v in r.items() if not k.startswith("_")}
+            row.update(key=key, first_seen=ts, gone_at="", first_expected_end=r["expected_end"])
             rows[key] = row
+        if not row.get("first_expected_end"):
+            row["first_expected_end"] = row.get("expected_end") or r["expected_end"]
         row.update(expected_end=r["expected_end"], type=r["type"],
                    city=r["city"], last_seen=ts, status="open", gone_at="")
     for key, row in rows.items():
@@ -192,6 +257,8 @@ def main():
     set_output("skipped", "false")
     ts = now_str()
     status, recs = fetch()
+    if status == "ok":
+        save_geometry(recs)
     rows = update(load(), status, recs, ts)
     save(rows)
     log_run(status, len(recs))
