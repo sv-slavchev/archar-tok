@@ -1,10 +1,15 @@
 name: Проверка за прекъсвания
 
 on:
+  # Основният таймер е външен (cron-job.org) — пуска това на всеки 15 мин с mode=auto.
+  # Графикът на GitHub остава само като резерва (той често закъснява с часове).
   schedule:
-    - cron: "7,37 * * * *"     # редовна проверка на всеки 30 минути
-    - cron: "22,52 * * * *"    # допълнителна — само докато тече прекъсване (→ на всеки 15 мин)
-  workflow_dispatch: {}         # ръчно пускане от раздел Actions
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "auto = пропусни, ако няма прекъсване и е проверявано скоро; force = провери веднага"
+        default: "force"
 
 permissions:
   contents: write
@@ -25,10 +30,10 @@ jobs:
       - name: Проверка на сайта
         id: mon
         run: |
-          if [ "${{ github.event.schedule }}" = "22,52 * * * *" ]; then
-            python monitor.py --if-open
-          else
+          if [ "${{ inputs.mode }}" = "force" ]; then
             python monitor.py
+          else
+            python monitor.py --auto
           fi
       - name: Отчет
         if: steps.mon.outputs.skipped != 'true'
