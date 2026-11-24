@@ -26,7 +26,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install requests
+      - run: pip install requests shapely
       - name: Проверка на сайта
         id: mon
         run: |
@@ -35,6 +35,9 @@ jobs:
           else
             python monitor.py --auto
           fi
+      - name: Контур на селото и улици (само при нужда)
+        if: steps.mon.outputs.skipped != 'true'
+        run: python map_data.py --if-needed
       - name: Отчет
         if: steps.mon.outputs.skipped != 'true'
         run: python report.py
