@@ -97,7 +97,8 @@ h1{font-size:clamp(28px,6vw,44px);line-height:1.08;margin:14px 0 6px;font-weight
 /* map */
 #map{height:440px;border-radius:14px;overflow:hidden;background:var(--surface-2);z-index:0}
 @media(max-width:640px){#map{height:360px}}
-.leaflet-container{font:inherit}
+.leaflet-container{font:inherit;background:var(--surface-2)}
+@media (prefers-color-scheme:dark){.osm-tiles{filter:invert(1) hue-rotate(180deg) brightness(.85) contrast(.9) saturate(.6)}}
 .leaflet-interactive:focus{outline:none}
 .leaflet-popup-content-wrapper,.leaflet-popup-tip{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
 .leaflet-popup-content{margin:12px 14px;font-size:13.5px;line-height:1.45}
@@ -110,7 +111,7 @@ h1{font-size:clamp(28px,6vw,44px);line-height:1.08;margin:14px 0 6px;font-weight
 .legend .ramp{display:flex;align-items:center;gap:6px}
 .legend .ramp i{width:22px;height:10px;border-radius:3px;display:inline-block}
 .toplist{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:6px}
-.toplist li{display:grid;grid-template-columns:110px 1fr 70px;gap:10px;align-items:center;font-size:13.5px;cursor:pointer;padding:5px 6px;border-radius:9px}
+.toplist li{display:grid;grid-template-columns:minmax(110px,190px) 1fr 70px;gap:10px;align-items:center;font-size:13.5px;cursor:pointer;padding:5px 6px;border-radius:9px}
 .toplist li:hover{background:var(--surface-2)}
 .toplist .bar{height:8px;border-radius:4px;background:var(--s3)}
 .toplist .bg{background:var(--surface-2);border-radius:4px}
@@ -343,7 +344,7 @@ function buildLayout() {
       ${card("c-list", "list", "Всички прекъсвания", `<a class="chip" href="https://github.com/" id="csvlink" style="text-decoration:none">${icon("download")} CSV за Excel</a>`)}
     </div>`;
   $("#c-map .body").innerHTML = `<div id="map"></div><div class="legend" id="maplegend"></div><ul class="toplist" id="toplist"></ul>
-    <p class="note">Зоните са приблизителни — очертани по адресите, които ЕРМ свързва с всеки трафопост. Номерата на картата са на трафопостовете; натиснете зона за подробности.</p>`;
+    <p class="note">Зоните са приблизителни — очертани по адресите, които ЕРМ свързва с всеки трафопост; пунктирът е контурът на селото. Номерата на картата са на трафопостовете; натиснете зона за подробности.</p>`;
   $("#mapmode").addEventListener("click", e => {
     const b = e.target.closest("button"); if (!b) return;
     $("#mapmode").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
@@ -386,13 +387,19 @@ function renderKpis() {
 /* ---------------- карта ---------------- */
 function initMap() {
   map = L.map("map", {zoomControl: true, scrollWheelZoom: false, tap: true, attributionControl: true});
-  const dark = matchMedia("(prefers-color-scheme: dark)").matches;
-  const carto = L.tileLayer(`https://{s}.basemaps.cartocdn.com/${dark ? "dark_all" : "light_all"}/{z}/{x}/{y}{r}.png`,
-    {maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>'});
+  // основа: OpenStreetMap (улици с имена, без ключ); в тъмен режим се затъмнява с филтър
+  const osm = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {maxZoom: 19, className: "osm-tiles", attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'});
   const sat = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
     {maxZoom: 19, attribution: "Сателит &copy; Esri"});
-  carto.addTo(map);
-  L.control.layers({"Карта": carto, "Сателит": sat}, null, {position: "topright"}).addTo(map);
+  osm.addTo(map);
+  L.control.layers({"Карта": osm, "Сателит": sat}, null, {position: "topright"}).addTo(map);
+  // контур на селото (от OpenStreetMap — жилищни зони и улици)
+  if (D.outline && D.outline.length) {
+    map.createPane("outline"); map.getPane("outline").style.zIndex = 350;
+    L.polygon(D.outline, {pane: "outline", interactive: false, color: css("--accent"), weight: 2.5, dashArray: "6 5",
+      fillColor: css("--accent"), fillOpacity: .07}).addTo(map);
+  }
   map.on("click", () => map.scrollWheelZoom.enable());
 
   const bounds = [];
@@ -436,7 +443,8 @@ function popupHtml(ceo) {
   return `<b>Трафопост ${esc(ceo)}</b><br><span class="muted">${esc(title(t.city || ""))}</span><br>
     <div style="margin:8px 0 6px">${s.now ? `<span class="chip live">${icon("zapoff")} Без ток сега</span>` : `<span class="chip good">${icon("zap")} Има ток</span>`}</div>
     <b class="num">${s.n}</b> прекъсвания · <b class="num">${fH(s.h)}</b> без ток <span class="muted">${per}</span>
-    ${s.last ? `<br><span class="muted">Последно: ${fDT(s.last.b)} · ${fH(s.last.h)} · ${s.last.planned ? "планирано" : "непланирано"}</span>` : ""}`;
+    ${s.last ? `<br><span class="muted">Последно: ${fDT(s.last.b)} · ${fH(s.last.h)} · ${s.last.planned ? "планирано" : "непланирано"}</span>` : ""}
+    ${t.streets && t.streets.length ? `<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--line)"><span class="muted" style="font-size:12px;font-weight:700">УЛИЦИ (приблизително)</span><br>${t.streets.map(esc).join(", ")}</div>` : ""}`;
 }
 function seqColor(v, max) {
   if (!v) return css("--s0");
@@ -473,7 +481,7 @@ function renderMap() {
     .sort((a, b) => b[mapMode === "hours" ? "h" : "n"] - a[mapMode === "hours" ? "h" : "n"]).slice(0, 6);
   const k2 = mapMode === "hours" ? "h" : "n", mx = Math.max(1e-9, ...top.map(x => x[k2]));
   $("#toplist").innerHTML = top.length ? `<li style="cursor:default;color:var(--ink-3);font-size:12px;font-weight:700;display:block">НАЙ-ЗАСЕГНАТИ В ${esc(CITY)}</li>` +
-    top.map(x => `<li data-c="${esc(x.c)}"><span><b>${esc(x.c)}</b></span><span class="bg"><span class="bar" style="display:block;width:${Math.max(4, x[k2] / mx * 100)}%"></span></span><span class="val num">${k2 === "h" ? fHs(x.h) + " ч" : (x.n === 1 ? "1 път" : x.n + " пъти")}</span></li>`).join("") : "";
+    top.map(x => `<li data-c="${esc(x.c)}"><span><b>${esc(x.c)}</b>${(D.tps[x.c].streets || []).length ? `<br><span class="muted" style="font-size:11.5px">${esc(D.tps[x.c].streets.slice(0, 2).join(", "))}${D.tps[x.c].streets.length > 2 ? "…" : ""}</span>` : ""}</span><span class="bg"><span class="bar" style="display:block;width:${Math.max(4, x[k2] / mx * 100)}%"></span></span><span class="val num">${k2 === "h" ? fHs(x.h) + " ч" : (x.n === 1 ? "1 път" : x.n + " пъти")}</span></li>`).join("") : "";
   $("#toplist").querySelectorAll("li[data-c]").forEach(li => li.onclick = () => {
     const ly = tpLayers[li.dataset.c]; if (!ly) return;
     const b = ly.getBounds ? ly.getBounds() : L2(ly.getLatLng());
@@ -681,7 +689,7 @@ function renderFoot() {
     <li>Краят на прекъсването е моментът, в който то изчезва от сайта на ЕРМ (± половин интервал между проверките). Много кратки прекъсвания може да не бъдат засечени.</li>
     <li>Включени са само прекъсванията, публикувани от ЕРМ. „Цялото село“ = засегнати поне 85% от известните ${MAIN_TPS.length} трафопоста в ${esc(title(D.city))}.</li>
     <li>„Спокойно време“: 2 ч преди до 1 ч след началото без пориви ≥ ${D.thresholds.gust} км/ч, валеж ≥ ${D.thresholds.rain} мм, сняг или гръмотевици (данни: Open-Meteo).</li>
-    <li>Карта: © OpenStreetMap, CARTO, Esri. Генерирано: ${fDT(NOW)}.</li></ul>`;
+    <li>Карта, контур на селото и улици: © сътрудници на OpenStreetMap (ODbL); сателит: Esri. Генерирано: ${fDT(NOW)}.</li></ul>`;
 }
 addEventListener("resize", (() => { let t; return () => { clearTimeout(t); t = setTimeout(() => D && (renderWeek(), renderPromise(), renderCal(), renderHour(), renderWd()), 200); }; })());
 </script>
