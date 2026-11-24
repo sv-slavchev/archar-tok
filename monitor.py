@@ -149,7 +149,27 @@ def update(rows, status, recs, ts):
     return rows
 
 
+def set_output(name, value):
+    """Предава резултат към следващите стъпки в GitHub Actions."""
+    path = os.environ.get("GITHUB_OUTPUT")
+    if path:
+        with open(path, "a", encoding="utf-8") as f:
+            f.write(f"{name}={value}\n")
+
+
+def has_open(rows):
+    city = os.environ.get("ERM_CITY", "АРЧАР").upper()
+    return any(r.get("status") == "open" and city in r.get("city", "").upper()
+               for r in rows.values())
+
+
 def main():
+    # --if-open: допълнителна (бърза) проверка — само ако в момента тече прекъсване
+    if "--if-open" in sys.argv and not has_open(load()):
+        print("Няма текущо прекъсване — допълнителната проверка се пропуска.")
+        set_output("skipped", "true")
+        return
+    set_output("skipped", "false")
     ts = now_str()
     status, recs = fetch()
     rows = update(load(), status, recs, ts)
