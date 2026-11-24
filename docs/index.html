@@ -1,47 +1,689 @@
 <!DOCTYPE html>
-<html lang="bg"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Прекъсвания на тока — Арчар</title>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Ток в Арчар — прекъсвания и статистика</title>
+<meta name="description" content="Кога и колко време е нямало ток в с. Арчар — по данни от ЕРМ Запад, проверявани автоматично.">
+<meta name="theme-color" content="#0f1115" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f5f4f0" media="(prefers-color-scheme: light)">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M13 2 3 14h9l-1 8 10-12h-9z' fill='%23f5a524'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
-:root{--bg:#f6f5f2;--card:#fff;--ink:#1f2328;--mut:#6b7280;--red:#d9534f;--blue:#3b7dd8;--green:#2e9d63}
-@media(prefers-color-scheme:dark){:root{--bg:#16181c;--card:#1f2228;--ink:#e8e8e8;--mut:#9aa0a6}}
-body{margin:0;font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
-main{max-width:1000px;margin:auto;padding:20px}
-h1{margin:.2em 0 0;font-size:1.6em} h2{font-size:1.1em;margin:0 0 .6em}
-.muted{color:var(--mut)} .card{background:var(--card);border-radius:12px;padding:16px 18px;margin:14px 0;box-shadow:0 1px 3px #0001}
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
-.kpi{background:var(--card);border-radius:12px;padding:12px 14px;box-shadow:0 1px 3px #0001}
-.kpi b{display:block;font-size:1.5em} .kpi span{color:var(--mut);font-size:.85em}
-.kpi.red b{color:var(--red)} .kpi.blue b{color:var(--blue)} .kpi.green b{color:var(--green)}
-.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:14px}
-.grid2 .card{margin:0}
-.chart{width:100%;height:auto;max-height:230px} .chart .v{font-size:10px;text-anchor:middle;fill:var(--mut)}
-.chart .l{font-size:10px;text-anchor:middle;fill:var(--mut)}
-table{width:100%;border-collapse:collapse;font-size:.9em} th,td{text-align:left;padding:6px 8px;border-bottom:1px solid #8882}
-tr.un td:first-child{border-left:3px solid var(--red)} tr.pl td:first-child{border-left:3px solid var(--blue)}
-.alert{background:#d9534f22;border:1px solid var(--red);border-radius:12px;padding:10px 14px;margin:12px 0}
-.wrap{overflow-x:auto}
-</style></head><body><main>
-<h1>Прекъсвания на тока — с. Арчар</h1>
-<div class="muted">По данни от сайта на ЕРМ Запад, проверявани автоматично. Наблюдение от 20.11.2026 01:29.
-Последна проверка: 24.11.2026 14:35 — успешна. Успешни проверки: 32 от 34.</div>
-<div class='alert'>⚡ В момента има прекъсване (от 24.11 09:50, очаквано възстановяване 24.11 16:00).</div>
-<div class="kpis" style="margin-top:14px"><div class='kpi '><b>1</b><span>прекъсвания общо</span></div><div class='kpi '><b>1</b><span>за последните 30 дни</span></div><div class='kpi red'><b>0</b><span>непланирани</span></div><div class='kpi blue'><b>1</b><span>планирани</span></div><div class='kpi '><b>4.8 ч</b><span>общо без ток</span></div><div class='kpi '><b>4.8 ч</b><span>средно на прекъсване</span></div><div class='kpi green'><b>—</b><span>непланирани при спокойно време</span></div></div>
-<div class="grid2" style="margin-top:14px">
-<div class="card"><h2>Непланирани прекъсвания по месеци</h2><svg viewBox='0 0 460 190' class='chart' role='img'><rect x='7' y='164.0' width='66' height='0.0' rx='2' fill='#d9534f'><title>11.26: 0</title></rect><text x='40.0' y='180' class='l'>11.26</text></svg></div>
-<div class="card"><h2>Часове без ток по месеци</h2><svg viewBox='0 0 460 190' class='chart' role='img'><rect x='7' y='14.0' width='66' height='150.0' rx='2' fill='#e59a3a'><title>11.26: 4.8 ч</title></rect><text x='40.0' y='10.0' class='v'>4.8</text><text x='40.0' y='180' class='l'>11.26</text></svg></div>
-<div class="card"><h2>В кой час започват (непланирани)</h2><svg viewBox='0 0 460 190' class='chart' role='img'><rect x='7.0' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>00: 0</title></rect><text x='14.375' y='180' class='l'>00</text><rect x='25.75' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>01: 0</title></rect><rect x='44.5' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>02: 0</title></rect><rect x='63.25' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>03: 0</title></rect><text x='70.625' y='180' class='l'>03</text><rect x='82.0' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>04: 0</title></rect><rect x='100.75' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>05: 0</title></rect><rect x='119.5' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>06: 0</title></rect><text x='126.875' y='180' class='l'>06</text><rect x='138.25' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>07: 0</title></rect><rect x='157.0' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>08: 0</title></rect><rect x='175.75' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>09: 0</title></rect><text x='183.125' y='180' class='l'>09</text><rect x='194.5' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>10: 0</title></rect><rect x='213.25' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>11: 0</title></rect><rect x='232.0' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>12: 0</title></rect><text x='239.375' y='180' class='l'>12</text><rect x='250.75' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>13: 0</title></rect><rect x='269.5' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>14: 0</title></rect><rect x='288.25' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>15: 0</title></rect><text x='295.625' y='180' class='l'>15</text><rect x='307.0' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>16: 0</title></rect><rect x='325.75' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>17: 0</title></rect><rect x='344.5' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>18: 0</title></rect><text x='351.875' y='180' class='l'>18</text><rect x='363.25' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>19: 0</title></rect><rect x='382.0' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>20: 0</title></rect><rect x='400.75' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>21: 0</title></rect><text x='408.125' y='180' class='l'>21</text><rect x='419.5' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>22: 0</title></rect><rect x='438.25' y='164.0' width='14.75' height='0.0' rx='2' fill='#d9534f'><title>23: 0</title></rect></svg></div>
-<div class="card"><h2>Ден от седмицата (непланирани)</h2><svg viewBox='0 0 460 190' class='chart' role='img'><rect x='7.0' y='164.0' width='60.28571428571429' height='0.0' rx='2' fill='#d9534f'><title>Пн: 0</title></rect><text x='37.142857142857146' y='180' class='l'>Пн</text><rect x='71.28571428571429' y='164.0' width='60.28571428571429' height='0.0' rx='2' fill='#d9534f'><title>Вт: 0</title></rect><text x='101.42857142857144' y='180' class='l'>Вт</text><rect x='135.57142857142858' y='164.0' width='60.28571428571429' height='0.0' rx='2' fill='#d9534f'><title>Ср: 0</title></rect><text x='165.71428571428572' y='180' class='l'>Ср</text><rect x='199.8571428571429' y='164.0' width='60.28571428571429' height='0.0' rx='2' fill='#d9534f'><title>Чт: 0</title></rect><text x='230.00000000000003' y='180' class='l'>Чт</text><rect x='264.14285714285717' y='164.0' width='60.28571428571429' height='0.0' rx='2' fill='#d9534f'><title>Пт: 0</title></rect><text x='294.28571428571433' y='180' class='l'>Пт</text><rect x='328.42857142857144' y='164.0' width='60.28571428571429' height='0.0' rx='2' fill='#d9534f'><title>Сб: 0</title></rect><text x='358.5714285714286' y='180' class='l'>Сб</text><rect x='392.7142857142858' y='164.0' width='60.28571428571429' height='0.0' rx='2' fill='#d9534f'><title>Нд: 0</title></rect><text x='422.85714285714295' y='180' class='l'>Нд</text></svg></div>
-<div class="card"><h2>Продължителност</h2><svg viewBox='0 0 460 190' class='chart' role='img'><rect x='7' y='164.0' width='66' height='0.0' rx='2' fill='#6c7ae0'><title>&lt;1 ч: 0</title></rect><text x='40.0' y='180' class='l'>&lt;1 ч</text><rect x='77' y='164.0' width='66' height='0.0' rx='2' fill='#6c7ae0'><title>1–2 ч: 0</title></rect><text x='110.0' y='180' class='l'>1–2 ч</text><rect x='147' y='164.0' width='66' height='0.0' rx='2' fill='#6c7ae0'><title>2–4 ч: 0</title></rect><text x='180.0' y='180' class='l'>2–4 ч</text><rect x='217' y='14.0' width='66' height='150.0' rx='2' fill='#6c7ae0'><title>4–8 ч: 1</title></rect><text x='250.0' y='10.0' class='v'>1</text><text x='250.0' y='180' class='l'>4–8 ч</text><rect x='287' y='164.0' width='66' height='0.0' rx='2' fill='#6c7ae0'><title>&gt;8 ч: 0</title></rect><text x='320.0' y='180' class='l'>&gt;8 ч</text></svg></div>
-<div class="card"><h2>Най-често засегнати трафопостове</h2>
-<table><tr><td>VD_0866</td><td>1 пъти</td></tr><tr><td>VD_0867</td><td>1 пъти</td></tr><tr><td>VD_0868</td><td>1 пъти</td></tr><tr><td>VD_0869</td><td>1 пъти</td></tr><tr><td>VD_0870</td><td>1 пъти</td></tr><tr><td>VD_0871</td><td>1 пъти</td></tr><tr><td>VD_0871_02</td><td>1 пъти</td></tr><tr><td>VD_0871_03</td><td>1 пъти</td></tr><tr><td>VD_0871_04</td><td>1 пъти</td></tr><tr><td>VD_0872</td><td>1 пъти</td></tr></table></div>
+:root{
+  --bg:#f5f4f0; --surface:#ffffff; --surface-2:#f0efea; --line:#e4e2db;
+  --ink:#16181d; --ink-2:#4b5059; --ink-3:#80858f;
+  --accent:#f5a524; --accent-ink:#8a5300;
+  --unpl:#E5484D; --plan:#3E7BFA;
+  --ok:#1f9d63; --ok-bg:#e3f5ec; --bad:#d93036; --bad-bg:#fde8e8; --warn:#b26b00; --warn-bg:#fff2d9;
+  --s0:#efede6; --s1:#fde3cf; --s2:#f8b98d; --s3:#ee8550; --s4:#d4572a; --s5:#a83a18;
+  --shadow:0 1px 2px rgba(20,20,30,.04),0 4px 16px rgba(20,20,30,.05);
+  --r:18px;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#0f1115; --surface:#171a20; --surface-2:#1e222a; --line:#2a2f38;
+  --ink:#eef0f3; --ink-2:#b4bac4; --ink-3:#7e8591;
+  --accent:#f5a524; --accent-ink:#f5c46b;
+  --unpl:#EF5257; --plan:#4A86F7;
+  --ok:#3ccf8a; --ok-bg:#12301f; --bad:#ff6b6f; --bad-bg:#3a1517; --warn:#f5b54a; --warn-bg:#33270f;
+  --s0:#232730; --s1:#4a2a1c; --s2:#7a3a1c; --s3:#b5501f; --s4:#e5692c; --s5:#ff9a5c;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25);
+}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Manrope,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 16px calc(32px + env(safe-area-inset-bottom))}
+svg.i{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.muted{color:var(--ink-3)} .small{font-size:13px}
+.num{font-variant-numeric:tabular-nums}
+
+/* hero */
+header.hero{padding:28px 0 8px}
+.brand{display:flex;align-items:center;gap:10px;color:var(--ink-2);font-weight:600;font-size:13px;letter-spacing:.02em;text-transform:uppercase}
+.brand .logo{width:28px;height:28px;border-radius:9px;background:var(--accent);display:grid;place-items:center;color:#1b1200}
+.brand .logo svg{width:16px;height:16px;fill:currentColor;stroke:none}
+h1{font-size:clamp(28px,6vw,44px);line-height:1.08;margin:14px 0 6px;font-weight:800;letter-spacing:-.02em}
+.sub{color:var(--ink-2);margin:0 0 18px;max-width:640px}
+
+.status{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;padding:18px 20px;border-radius:var(--r);background:var(--surface);box-shadow:var(--shadow);border:1px solid var(--line)}
+.status .dot{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;flex:none}
+.status .dot svg{width:24px;height:24px}
+.status.on .dot{background:var(--ok-bg);color:var(--ok)}
+.status.off .dot{background:var(--bad-bg);color:var(--bad);animation:pulse 2s infinite}
+.status.unk .dot{background:var(--warn-bg);color:var(--warn)}
+@keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--bad) 45%,transparent)}70%{box-shadow:0 0 0 12px transparent}100%{box-shadow:0 0 0 0 transparent}}
+.status h2{margin:0;font-size:19px;font-weight:800}
+.status p{margin:2px 0 0;color:var(--ink-2);font-size:14px}
+.status .meta{margin-left:auto;text-align:right;font-size:12.5px;color:var(--ink-3);white-space:nowrap}
+@media(max-width:640px){.status{grid-template-columns:auto 1fr;gap:12px 14px;padding:16px}.status .meta{grid-column:2;text-align:left;margin:0;white-space:normal}.status h2{font-size:17px}}
+
+/* period bar */
+.periodbar{position:sticky;top:0;z-index:1000;margin:18px -16px 0;padding:10px 16px;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:center;gap:12px}
+.seg{display:inline-flex;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:3px;gap:2px;overflow-x:auto;scrollbar-width:none;max-width:100%}
+.seg::-webkit-scrollbar{display:none}
+.seg button{all:unset;cursor:pointer;padding:7px 12px;border-radius:9px;font-weight:600;font-size:13.5px;color:var(--ink-2);white-space:nowrap}
+.seg button[aria-pressed=true]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.seg button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.periodbar .lbl{font-size:13px;color:var(--ink-3);font-weight:600}
+@media(max-width:640px){.periodbar .lbl{display:none}}
+
+/* kpis */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:12px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;box-shadow:var(--shadow)}
+.kpi .k{display:flex;align-items:center;gap:7px;color:var(--ink-3);font-size:12.5px;font-weight:600}
+.kpi .v{font-size:28px;font-weight:800;letter-spacing:-.02em;margin-top:4px;line-height:1.1}
+@media(max-width:520px){.kpi .v{font-size:23px}.kpis{grid-template-columns:1fr 1fr}.seg button{padding:7px 10px}}
+.kpi .v small{font-size:15px;font-weight:700;color:var(--ink-2);margin-left:2px}
+.kpi .d{font-size:12.5px;color:var(--ink-2);margin-top:4px}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--surface-2);color:var(--ink-2);white-space:nowrap}
+.sw{width:9px;height:9px;border-radius:3px;display:inline-block;flex:none}
+.sw.u{background:var(--unpl)} .sw.p{background:var(--plan)}
+
+/* cards */
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px;margin-top:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:18px;min-width:0;grid-column:span 12}
+.c6{grid-column:span 6} .c7{grid-column:span 7} .c5{grid-column:span 5}
+@media(max-width:860px){.c6,.c7,.c5{grid-column:span 12}}
+.card h3{margin:0;font-size:16.5px;font-weight:800;display:flex;align-items:center;gap:9px}
+.card h3 .ic{width:30px;height:30px;border-radius:10px;background:var(--surface-2);display:grid;place-items:center;color:var(--ink-2)}
+.card .hd{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.card .note{font-size:12.5px;color:var(--ink-3);margin:10px 0 0}
+.empty{padding:26px 10px;text-align:center;color:var(--ink-3);font-size:14px}
+
+/* map */
+#map{height:440px;border-radius:14px;overflow:hidden;background:var(--surface-2);z-index:0}
+@media(max-width:640px){#map{height:360px}}
+.leaflet-container{font:inherit}
+.leaflet-interactive:focus{outline:none}
+.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.leaflet-popup-content{margin:12px 14px;font-size:13.5px;line-height:1.45}
+.leaflet-popup-content b{font-size:15px}
+.leaflet-tooltip.tpl{padding:1px 5px;font-size:10.5px;border-radius:6px}
+.leaflet-tooltip.tpl:before{display:none}
+.leaflet-tooltip{background:var(--surface);color:var(--ink);border:1px solid var(--line);box-shadow:var(--shadow);font-weight:700;font-size:12px;padding:3px 7px}
+.leaflet-control-layers,.leaflet-bar a{background:var(--surface)!important;color:var(--ink)!important;border-color:var(--line)!important}
+.legend{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin-top:12px;font-size:12.5px;color:var(--ink-2)}
+.legend .ramp{display:flex;align-items:center;gap:6px}
+.legend .ramp i{width:22px;height:10px;border-radius:3px;display:inline-block}
+.toplist{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:6px}
+.toplist li{display:grid;grid-template-columns:110px 1fr 70px;gap:10px;align-items:center;font-size:13.5px;cursor:pointer;padding:5px 6px;border-radius:9px}
+.toplist li:hover{background:var(--surface-2)}
+.toplist .bar{height:8px;border-radius:4px;background:var(--s3)}
+.toplist .bg{background:var(--surface-2);border-radius:4px}
+.toplist .val{text-align:right;color:var(--ink-2);font-weight:600}
+
+/* charts */
+.chart{width:100%;display:block;overflow:visible}
+.chart text{fill:var(--ink-3);font-size:11px;font-family:inherit}
+.chart .grid line{stroke:var(--line);stroke-width:1}
+.chart .hit{fill:transparent;cursor:pointer}
+.chart .lab{fill:var(--ink-2);font-weight:600}
+.scrollx{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}
+.cal-cell{cursor:pointer;rx:3}
+#tip{position:fixed;z-index:3000;pointer-events:none;background:var(--ink);color:var(--bg);padding:8px 10px;border-radius:10px;font-size:12.5px;line-height:1.4;max-width:260px;opacity:0;transform:translateY(4px);transition:opacity .12s,transform .12s;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+#tip.show{opacity:1;transform:none}
+#tip b{font-weight:800}
+
+/* list */
+.inc{display:grid;gap:10px}
+.item{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.item .ico{width:38px;height:38px;border-radius:12px;display:grid;place-items:center}
+.item .ico.u{background:color-mix(in srgb,var(--unpl) 15%,transparent);color:var(--unpl)}
+.item .ico.p{background:color-mix(in srgb,var(--plan) 15%,transparent);color:var(--plan)}
+.item .t{font-weight:700}
+.item .m{display:flex;flex-wrap:wrap;gap:6px;margin-top:5px}
+.item .dur{text-align:right;font-weight:800;font-size:17px;white-space:nowrap}
+.item .dur small{display:block;font-size:11.5px;font-weight:600;color:var(--ink-3)}
+.chip.live{background:var(--bad-bg);color:var(--bad)}
+.chip.bad{background:var(--warn-bg);color:var(--warn)}
+.chip.good{background:var(--ok-bg);color:var(--ok)}
+.more{all:unset;cursor:pointer;display:block;margin:12px auto 0;padding:9px 16px;border-radius:12px;background:var(--surface-2);font-weight:700;font-size:13.5px}
+@media(max-width:520px){.item{grid-template-columns:auto 1fr}.item .dur{grid-column:2;text-align:left}.item .dur small{display:inline;margin-left:6px}}
+
+.cmp{display:grid;gap:8px}
+.cmp .row{display:grid;grid-template-columns:130px 1fr 74px;gap:10px;align-items:center;font-size:13.5px}
+.cmp .row.me{font-weight:800}
+.cmp .track{background:var(--surface-2);border-radius:5px;height:12px;overflow:hidden}
+.cmp .fill{height:100%;border-radius:5px;background:var(--ink-3);opacity:.55}
+.cmp .row.me .fill{background:var(--accent);opacity:1}
+.cmp .val{text-align:right;color:var(--ink-2);font-weight:700}
+@media(max-width:520px){.cmp .row{grid-template-columns:100px 1fr 60px}}
+
+footer{margin-top:26px;color:var(--ink-3);font-size:12.5px;line-height:1.6}
+footer h4{color:var(--ink-2);margin:0 0 6px;font-size:13px}
+footer ul{margin:0;padding-left:18px}
+.loading{padding:80px 0;text-align:center;color:var(--ink-3)}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></symbol>
+    <symbol id="i-zapoff" viewBox="0 0 24 24"><path d="M12.4 6.7 13 2l-2.4 2.9M18.6 13.4 21 10h-5.3M8 8l-5 6h9l-1 8 5-6M2 2l20 20"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></symbol>
+    <symbol id="i-map" viewBox="0 0 24 24"><path d="M9 3 3 6v15l6-3 6 3 6-3V3l-6 3-6-3zM9 3v15M15 6v15"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+    <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.7-9h1.8a4.5 4.5 0 1 1 0 9z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+    <symbol id="i-hour" viewBox="0 0 24 24"><path d="M5 22h14M5 2h14M17 22v-4.2a2 2 0 0 0-.6-1.4L12 12l-4.4 4.4a2 2 0 0 0-.6 1.4V22M7 2v4.2a2 2 0 0 0 .6 1.4L12 12l4.4-4.4a2 2 0 0 0 .6-1.4V2"/></symbol>
+    <symbol id="i-bars" viewBox="0 0 24 24"><path d="M3 3v18h18M7 16v-4M12 16V8M17 16v-7"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></symbol>
+    <symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0 5 5L22 13.6 13.6 22l-2.3-2.3a4 4 0 0 0-5-5L2 10.4 10.4 2z"/></symbol>
+    <symbol id="i-wind" viewBox="0 0 24 24"><path d="M9.6 4.6A2 2 0 1 1 11 8H2M12.6 19.4A2 2 0 1 0 14 16H2M17.7 7.7A2.5 2.5 0 1 1 19.5 12H2"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></symbol>
+  </defs>
+</svg>
+<div id="tip" role="tooltip"></div>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="brand"><span class="logo"><svg viewBox="0 0 24 24"><use href="#i-zap"/></svg></span>Наблюдение на електрозахранването</div>
+    <h1 id="title">Ток в Арчар</h1>
+    <p class="sub" id="subtitle">Кога и колко време е нямало ток — по данни от сайта на ЕРМ Запад, проверявани автоматично.</p>
+    <div id="status" class="status unk" aria-live="polite"><div class="dot"><svg class="i"><use href="#i-alert"/></svg></div><div><h2>Зареждане…</h2></div></div>
+  </header>
+
+  <div class="periodbar">
+    <span class="lbl">Период:</span>
+    <div class="seg" id="period" role="group" aria-label="Период">
+      <button data-d="7">7 дни</button><button data-d="30" aria-pressed="true">30 дни</button><button data-d="90">3 месеца</button><button data-d="365">Година</button><button data-d="0">Всичко</button>
+    </div>
+  </div>
+
+  <main id="app"><div class="loading">Зареждане на данните…</div></main>
+
+  <footer id="foot"></footer>
 </div>
-<div class="card"><h2>Всички прекъсвания</h2><div class="wrap"><table>
-<tr><th>Дата</th><th>Начало</th><th>Край*</th><th>Часа</th><th>Вид</th><th>ТП</th><th>Време (±2 ч от началото)</th></tr>
-<tr class='pl'><td>24.11.2026</td><td>09:50</td><td>продължава</td><td>4.8</td><td>планирано</td><td>14</td><td>☀️ вятър до 46 км/ч, валеж 0.0 мм</td></tr>
-</table></div>
-<p class="muted">* Краят е оценка: моментът, в който прекъсването изчезва от сайта (точност ± половин интервал между проверките),
-или обявеното от ЕРМ време, ако попада в този интервал. „⚠️“ = пориви ≥50 км/ч, валеж ≥5 мм, сняг или гръмотевици
-(данни Open-Meteo). Прекъсвания, които не са публикувани на сайта на ЕРМ, не са включени.</p></div>
-<p class="muted">Генерирано на 24.11.2026 14:35.</p>
-</main></body></html>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+"use strict";
+/* ---------------- помощни ---------------- */
+const $ = (s, el = document) => el.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const icon = (id, cls = "i") => `<svg class="${cls}"><use href="#i-${id}"/></svg>`;
+const P = s => s ? new Date(s) : null;               // "2026-11-24T09:50" -> местно време
+const pad = n => String(n).padStart(2, "0");
+const fD = d => `${pad(d.getDate())}.${pad(d.getMonth() + 1)}`;
+const fDY = d => `${fD(d)}.${d.getFullYear()}`;
+const fT = d => `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+const fDT = d => `${fDY(d)} ${fT(d)}`;
+const WD = ["Нд","Пн","Вт","Ср","Чт","Пт","Сб"];
+const WDL = ["неделя","понеделник","вторник","сряда","четвъртък","петък","събота"];
+const MON = ["яну","фев","мар","апр","май","юни","юли","авг","сеп","окт","ное","дек"];
+const H = 3600e3, DAY = 864e5;
+function fH(h) {
+  if (h == null) return "—";
+  const m = Math.round(h * 60);
+  if (m < 60) return `${m} мин`;
+  const hh = Math.floor(m / 60), mm = m % 60;
+  return mm ? `${hh} ч ${mm} мин` : `${hh} ч`;
+}
+const fHs = h => h < 10 ? h.toFixed(1).replace(".", ",") : Math.round(h).toString();
+const short = s => title(s).replace(/,\s*общ\..*$/i, "");
+const title = s => s.toLowerCase().replace(/(^|[\s,.-])(\S)/g, (m, a, b) => a + b.toUpperCase()).replace(/ Общ\. /, " общ. ");
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const dayKey = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const startOfDay = d => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+
+/* tooltip (мишка и докосване) */
+const tip = $("#tip");
+function showTip(html, ev) {
+  tip.innerHTML = html; tip.classList.add("show");
+  const x = ev.clientX ?? (ev.touches && ev.touches[0].clientX), y = ev.clientY ?? (ev.touches && ev.touches[0].clientY);
+  const r = tip.getBoundingClientRect();
+  let left = x + 14, top = y + 14;
+  if (left + r.width > innerWidth - 8) left = x - r.width - 14;
+  if (left < 8) left = 8;
+  if (top + r.height > innerHeight - 8) top = y - r.height - 14;
+  tip.style.left = left + "px"; tip.style.top = top + "px";
+}
+const hideTip = () => tip.classList.remove("show");
+function bindTips(root) {
+  root.querySelectorAll("[data-tip]").forEach(el => {
+    el.addEventListener("pointermove", e => showTip(el.dataset.tip, e));
+    el.addEventListener("pointerleave", hideTip);
+    el.addEventListener("click", e => { showTip(el.dataset.tip, e); e.stopPropagation(); });
+  });
+}
+document.addEventListener("click", hideTip);
+addEventListener("scroll", hideTip, {passive: true});
+
+/* ---------------- данни ---------------- */
+let D, NOW, CITY, MAIN_TPS, ALL, MAIN, periodDays = 30, map, tpLayers = {}, mapMode = "now";
+
+fetch("data.json?" + Date.now()).then(r => r.json()).then(init).catch(e => {
+  $("#app").innerHTML = `<div class="empty">Данните не можаха да се заредят (${esc(e.message)}).</div>`;
+});
+
+function init(data) {
+  D = data; NOW = P(D.generated) || new Date(); CITY = D.city.toUpperCase();
+  const isMain = c => (c || "").toUpperCase().includes(CITY);
+  ALL = D.incidents.map(i => ({...i, b: P(i.b), e: i.ongoing ? NOW : P(i.e), exp: P(i.exp), exp0: P(i.exp0), main: isMain(i.city)}));
+  ALL.forEach(i => { if (i.ongoing) i.h = (NOW - i.b) / H; });
+  MAIN = ALL.filter(i => i.main);
+  MAIN_TPS = Object.entries(D.tps).filter(([k, t]) => isMain(t.city)).map(([k]) => k);
+  const nice = title(D.city);
+  document.title = `Ток в ${nice} — прекъсвания и статистика`;
+  $("#title").textContent = `Ток в ${nice}`;
+  renderStatus();
+  $("#period").addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    $("#period").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
+    periodDays = +b.dataset.d; renderAll();
+  });
+  buildLayout(); initMap(); renderAll(); renderFoot();
+}
+
+function inPeriod(list) {
+  if (!periodDays) return list;
+  const since = new Date(NOW - periodDays * DAY);
+  return list.filter(i => i.e > since);
+}
+function hoursIn(i) {
+  if (!periodDays) return i.h;
+  const since = new Date(NOW - periodDays * DAY);
+  return Math.max(0, (i.e - (i.b > since ? i.b : since)) / H);
+}
+const scope = i => {
+  const n = MAIN_TPS.length || 1, k = i.tps.length;
+  return {whole: k >= Math.max(1, Math.ceil(n * 0.85)), k, n};
+};
+
+/* ---------------- статус сега ---------------- */
+function renderStatus() {
+  const el = $("#status");
+  const lc = D.last_check, lcAt = lc && P(lc.at);
+  const ageMin = lcAt ? (Date.now() - lcAt) / 6e4 : Infinity;
+  const ago = !lcAt ? "—" : ageMin < 60 ? `преди ${Math.max(1, Math.round(ageMin))} мин` : ageMin < 1440 ? `преди ${Math.round(ageMin / 60)} ч` : fDT(lcAt);
+  const meta = `<div class="meta">Последна проверка<br><b class="num">${lcAt ? fT(lcAt) : "—"}</b> · ${ago}</div>`;
+  const cur = MAIN.filter(i => i.ongoing);
+  const stale = ageMin > 90 || (lc && !["ok", "empty"].includes(lc.status));
+  if (cur.length) {
+    const i = cur[0], s = scope(i);
+    const exp = i.exp ? `очаква се до <b>${fT(i.exp)}</b>${dayKey(i.exp) !== dayKey(NOW) ? " на " + fD(i.exp) : ""}` : "без обявен час за възстановяване";
+    el.className = "status off";
+    el.innerHTML = `<div class="dot">${icon("zapoff")}</div><div><h2>Няма ток от ${fT(i.b)}${dayKey(i.b) !== dayKey(NOW) ? " на " + fD(i.b) : ""}</h2>
+      <p>${i.planned ? "Планирано" : "Непланирано"} · ${s.whole ? "цялото село" : `част от селото (${s.k} от ${s.n} трафопоста)`} · ${exp}</p></div>${meta}`;
+  } else if (stale) {
+    el.className = "status unk";
+    el.innerHTML = `<div class="dot">${icon("alert")}</div><div><h2>Няма свежи данни</h2><p>Последната успешна проверка е отдавна — състоянието в момента не е известно.</p></div>${meta}`;
+  } else {
+    const last = MAIN[MAIN.length - 1];
+    el.className = "status on";
+    el.innerHTML = `<div class="dot">${icon("zap")}</div><div><h2>Има ток</h2><p>${last ? `Последно прекъсване: ${fDY(last.b)}, ${fH(last.h)}` : "Няма записани прекъсвания"}</p></div>${meta}`;
+  }
+}
+
+/* ---------------- оформление ---------------- */
+function card(id, ic, ttl, extra = "", cls = "") {
+  return `<section class="card ${cls}" id="${id}"><div class="hd"><h3><span class="ic">${icon(ic)}</span>${ttl}</h3>${extra}</div><div class="body"></div></section>`;
+}
+function buildLayout() {
+  $("#app").innerHTML = `
+    <div class="kpis" id="kpis"></div>
+    <div class="grid">
+      ${card("c-map", "map", "Карта на трафопостовете",
+        `<div class="seg" id="mapmode"><button data-m="now" aria-pressed="true">Сега</button><button data-m="count">Брой</button><button data-m="hours">Часове</button></div>`)}
+      ${card("c-week", "clock", "Последните 7 дни", "", "c7")}
+      ${card("c-promise", "target", "Обещано и реално", "", "c5")}
+      ${card("c-cal", "cal", "Календар", "")}
+      ${card("c-hour", "hour", "В кой час спира токът", "", "c6")}
+      ${card("c-wd", "bars", "По дни от седмицата", "", "c6")}
+      ${card("c-cmp", "users", "Сравнение със съседните села",
+        `<div class="seg" id="cmpmode"><button data-m="n" aria-pressed="true">Брой</button><button data-m="h">Часове</button></div>`)}
+      ${card("c-list", "list", "Всички прекъсвания", `<a class="chip" href="https://github.com/" id="csvlink" style="text-decoration:none">${icon("download")} CSV за Excel</a>`)}
+    </div>`;
+  $("#c-map .body").innerHTML = `<div id="map"></div><div class="legend" id="maplegend"></div><ul class="toplist" id="toplist"></ul>
+    <p class="note">Зоните са приблизителни — очертани по адресите, които ЕРМ свързва с всеки трафопост. Номерата на картата са на трафопостовете; натиснете зона за подробности.</p>`;
+  $("#mapmode").addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    $("#mapmode").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
+    mapMode = b.dataset.m; renderMap();
+  });
+  $("#cmpmode").addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    $("#cmpmode").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
+    renderCompare(b.dataset.m);
+  });
+  // връзка към CSV в хранилището (страницата е на <user>.github.io/<repo>/)
+  const m = location.hostname.match(/^([^.]+)\.github\.io$/);
+  const repo = location.pathname.split("/").filter(Boolean)[0];
+  const link = $("#csvlink");
+  if (m && repo) link.href = `https://github.com/${m[1]}/${repo}/blob/main/data/incidents.csv`;
+  else link.style.display = "none";
+}
+function renderAll() {
+  renderKpis(); renderMap(); renderWeek(); renderPromise(); renderCal();
+  renderHour(); renderWd(); renderCompare($("#cmpmode [aria-pressed=true]").dataset.m); renderList();
+}
+
+/* ---------------- KPI ---------------- */
+function renderKpis() {
+  const L = inPeriod(MAIN), u = L.filter(i => !i.planned), p = L.filter(i => i.planned);
+  const hrs = L.reduce((s, i) => s + hoursIn(i), 0);
+  const longest = L.reduce((a, i) => (!a || i.h > a.h ? i : a), null);
+  const whole = L.filter(i => scope(i).whole).length;
+  const uw = u.filter(i => i.w), calm = uw.filter(i => !i.w.bad).length;
+  const avg = L.length ? L.reduce((s, i) => s + i.h, 0) / L.length : 0;
+  const k = (ic, lab, v, d) => `<div class="kpi"><div class="k">${icon(ic)}${lab}</div><div class="v num">${v}</div><div class="d">${d}</div></div>`;
+  $("#kpis").innerHTML =
+    k("zapoff", "Прекъсвания", L.length, `<span class="chip"><i class="sw u"></i>${u.length} ${u.length === 1 ? "непланирано" : "непланирани"}</span> <span class="chip"><i class="sw p"></i>${p.length} ${p.length === 1 ? "планирано" : "планирани"}</span>`) +
+    k("clock", "Общо без ток", `${fHs(hrs)}<small>ч</small>`, periodDays ? `${(hrs / (periodDays * 24) * 100).toFixed(1).replace(".", ",")}% от времето` : "за целия период") +
+    k("hour", "Средно на прекъсване", L.length ? fH(avg) : "—", longest ? `най-дълго: ${fH(longest.h)} (${fD(longest.b)})` : "няма данни") +
+    k("home", "Цялото село", L.length ? `${whole}<small>от ${L.length}</small>` : "—", "пъти е спирал целият Арчар, а не само част") +
+    k("sun", "При спокойно време", uw.length ? `${calm}<small>от ${uw.length}</small>` : "—", "непланирани без силен вятър, дъжд, сняг или буря");
+}
+
+/* ---------------- карта ---------------- */
+function initMap() {
+  map = L.map("map", {zoomControl: true, scrollWheelZoom: false, tap: true, attributionControl: true});
+  const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+  const carto = L.tileLayer(`https://{s}.basemaps.cartocdn.com/${dark ? "dark_all" : "light_all"}/{z}/{x}/{y}{r}.png`,
+    {maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>'});
+  const sat = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    {maxZoom: 19, attribution: "Сателит &copy; Esri"});
+  carto.addTo(map);
+  L.control.layers({"Карта": carto, "Сателит": sat}, null, {position: "topright"}).addTo(map);
+  map.on("click", () => map.scrollWheelZoom.enable());
+
+  const bounds = [];
+  for (const [ceo, t] of Object.entries(D.tps)) {
+    let layer;
+    if (t.hull && t.hull.length >= 3) layer = L.polygon(t.hull, {weight: 1.5, fillOpacity: .55});
+    else if (t.lat != null) layer = L.circleMarker([t.lat, t.lon], {radius: 9, weight: 2, fillOpacity: .85});
+    else continue;
+    layer.addTo(map);
+    const isMainTp = (t.city || "").toUpperCase().includes(CITY);
+    layer._lbl = ceo.replace("VD_", ""); layer._main = isMainTp;
+    layer.bindTooltip(layer._lbl, {direction: "center", className: "tpl", opacity: .95});
+    layer.on("click", () => layer.openPopup());
+    layer.bindPopup(() => popupHtml(ceo));
+    tpLayers[ceo] = layer;
+    if ((t.city || "").toUpperCase().includes(CITY)) {
+      if (t.hull && t.hull.length >= 3) bounds.push(...t.hull); else bounds.push([t.lat, t.lon]);
+    }
+  }
+  if (bounds.length) map.fitBounds(bounds, {padding: [20, 20]});
+  else map.setView([43.81, 22.91], 13);
+  // номерата се виждат постоянно само при увеличение, иначе се застъпват
+  let shown = null;
+  const labels = () => {
+    const on = map.getZoom() >= (innerWidth > 700 ? 14 : 15);
+    if (on === shown) return; shown = on;
+    for (const ly of Object.values(tpLayers)) {
+      if (!ly._main) continue;
+      ly.unbindTooltip().bindTooltip(ly._lbl, {direction: "center", className: "tpl", opacity: .95, permanent: on});
+    }
+  };
+  map.on("zoomend", labels); labels();
+}
+function tpStats(ceo, list) {
+  const L = list.filter(i => i.tps.includes(ceo));
+  return {n: L.length, h: L.reduce((s, i) => s + hoursIn(i), 0), last: L[L.length - 1], now: ALL.some(i => i.ongoing && i.tps.includes(ceo))};
+}
+function popupHtml(ceo) {
+  const t = D.tps[ceo], s = tpStats(ceo, inPeriod(ALL));
+  const per = periodDays ? `за последните ${periodDays} дни` : "за целия период";
+  return `<b>Трафопост ${esc(ceo)}</b><br><span class="muted">${esc(title(t.city || ""))}</span><br>
+    <div style="margin:8px 0 6px">${s.now ? `<span class="chip live">${icon("zapoff")} Без ток сега</span>` : `<span class="chip good">${icon("zap")} Има ток</span>`}</div>
+    <b class="num">${s.n}</b> прекъсвания · <b class="num">${fH(s.h)}</b> без ток <span class="muted">${per}</span>
+    ${s.last ? `<br><span class="muted">Последно: ${fDT(s.last.b)} · ${fH(s.last.h)} · ${s.last.planned ? "планирано" : "непланирано"}</span>` : ""}`;
+}
+function seqColor(v, max) {
+  if (!v) return css("--s0");
+  const k = Math.min(5, Math.max(1, Math.ceil(v / max * 5)));
+  return css(`--s${k}`);
+}
+function renderMap() {
+  if (!map) return;
+  const L = inPeriod(ALL);
+  const stats = Object.fromEntries(Object.keys(tpLayers).map(c => [c, tpStats(c, L)]));
+  const key = mapMode === "hours" ? "h" : "n";
+  const max = Math.max(1e-9, ...Object.values(stats).map(s => s[key]));
+  const line = css("--surface");
+  for (const [ceo, layer] of Object.entries(tpLayers)) {
+    const s = stats[ceo];
+    let fill;
+    if (mapMode === "now") fill = s.now ? css("--bad") : css("--ok");
+    else fill = seqColor(s[key], max);
+    layer.setStyle({fillColor: fill, color: mapMode === "now" ? fill : line, weight: mapMode === "now" ? 1.5 : 1.5,
+                    fillOpacity: mapMode === "now" ? (s.now ? .6 : .28) : .8});
+  }
+  const lg = $("#maplegend");
+  if (mapMode === "now") {
+    lg.innerHTML = `<span class="chip live">${icon("zapoff")} Без ток</span><span class="chip good">${icon("zap")} Има ток</span>
+      <span class="muted">според проверката в ${D.last_check ? fT(P(D.last_check.at)) : "—"}</span>`;
+  } else {
+    const step = max / 5, f = v => key === "h" ? fHs(v) + " ч" : Math.round(v);
+    lg.innerHTML = `<span class="ramp"><i style="background:var(--s0)"></i>0</span>` +
+      [1, 2, 3, 4, 5].map(k => `<span class="ramp"><i style="background:var(--s${k})"></i>${key === "n" && max < 5 ? "" : "до "}${f(step * k)}</span>`).join("") +
+      `<span class="muted">${key === "h" ? "часове без ток" : "брой прекъсвания"} за избрания период</span>`;
+  }
+  // класация на трафопостовете в основното село
+  const top = MAIN_TPS.map(c => ({c, ...stats[c]})).filter(x => x && x[mapMode === "now" ? "n" : key] > 0)
+    .sort((a, b) => b[mapMode === "hours" ? "h" : "n"] - a[mapMode === "hours" ? "h" : "n"]).slice(0, 6);
+  const k2 = mapMode === "hours" ? "h" : "n", mx = Math.max(1e-9, ...top.map(x => x[k2]));
+  $("#toplist").innerHTML = top.length ? `<li style="cursor:default;color:var(--ink-3);font-size:12px;font-weight:700;display:block">НАЙ-ЗАСЕГНАТИ В ${esc(CITY)}</li>` +
+    top.map(x => `<li data-c="${esc(x.c)}"><span><b>${esc(x.c)}</b></span><span class="bg"><span class="bar" style="display:block;width:${Math.max(4, x[k2] / mx * 100)}%"></span></span><span class="val num">${k2 === "h" ? fHs(x.h) + " ч" : (x.n === 1 ? "1 път" : x.n + " пъти")}</span></li>`).join("") : "";
+  $("#toplist").querySelectorAll("li[data-c]").forEach(li => li.onclick = () => {
+    const ly = tpLayers[li.dataset.c]; if (!ly) return;
+    const b = ly.getBounds ? ly.getBounds() : L2(ly.getLatLng());
+    map.flyToBounds(b, {maxZoom: 16, duration: .6}); setTimeout(() => ly.openPopup(), 650);
+    $("#map").scrollIntoView({behavior: "smooth", block: "center"});
+  });
+}
+const L2 = ll => L.latLngBounds([ll, ll]);
+
+/* ---------------- последните 7 дни ---------------- */
+function renderWeek() {
+  const body = $("#c-week .body");
+  const W = Math.max(300, body.clientWidth || 600), rowH = 30, top = 22, left = 54, right = 14, days = 7;
+  const today = startOfDay(NOW);
+  const x = h => left + h / 24 * (W - left - right);
+  let s = `<svg class="chart" viewBox="0 0 ${W} ${top + days * rowH + 8}" role="img" aria-label="Прекъсвания по часове за последните 7 дни"><g class="grid">`;
+  for (let h = 0; h <= 24; h += 6) s += `<line x1="${x(h)}" x2="${x(h)}" y1="${top - 6}" y2="${top + days * rowH}"/><text x="${x(h)}" y="12" text-anchor="${h === 24 ? "end" : h === 0 ? "start" : "middle"}">${pad(h)}${W > 420 ? ":00" : ""}</text>`;
+  s += `</g>`;
+  let any = false;
+  for (let d = 0; d < days; d++) {
+    const day = new Date(today - d * DAY), next = new Date(+day + DAY), y = top + d * rowH;
+    s += `<rect x="${left}" y="${y + 5}" width="${W - left - right}" height="${rowH - 10}" rx="5" fill="var(--surface-2)"/>`;
+    s += `<text x="0" y="${y + rowH / 2 + 4}" class="lab">${d === 0 ? "Днес" : d === 1 ? "Вчера" : WD[day.getDay()] + " " + fD(day)}</text>`;
+    for (const i of MAIN) {
+      if (i.e <= day || i.b >= next) continue;
+      any = true;
+      const a = Math.max(0, (i.b - day) / H), b = Math.min(24, (i.e - day) / H);
+      const col = i.planned ? "var(--plan)" : "var(--unpl)";
+      const t = `<b>${i.planned ? "Планирано" : "Непланирано"}</b><br>${fDT(i.b)} – ${i.ongoing ? "продължава" : fT(i.e)}<br>${fH(i.h)} · ${scope(i).whole ? "цялото село" : scope(i).k + " ТП"}`;
+      s += `<rect x="${x(a)}" y="${y + 5}" width="${Math.max(3, x(b) - x(a))}" height="${rowH - 10}" rx="4" fill="${col}" ${i.ongoing ? 'opacity=".75"' : ""} data-tip="${esc(t)}" style="cursor:pointer"/>`;
+    }
+  }
+  if (+today === +startOfDay(new Date())) {
+    const nh = (Date.now() - today) / H;
+    s += `<line x1="${x(nh)}" x2="${x(nh)}" y1="${top}" y2="${top + rowH}" stroke="var(--ink)" stroke-width="2"/>`;
+  }
+  s += `</svg>`;
+  body.innerHTML = `${s}
+    <div class="legend"><span class="chip"><i class="sw u"></i>Непланирано</span><span class="chip"><i class="sw p"></i>Планирано</span>${any ? "" : '<span class="muted">Няма прекъсвания през последните 7 дни.</span>'}</div>`;
+  bindTips(body);
+}
+
+/* ---------------- обещано и реално ---------------- */
+function renderPromise() {
+  const body = $("#c-promise .body");
+  const L = inPeriod(MAIN).filter(i => !i.ongoing && i.delay != null);
+  if (!L.length) {
+    body.innerHTML = `<div class="empty">${icon("target")}<br>Още няма приключили прекъсвания с обявен час за възстановяване в този период.</div>
+      <p class="note">Тук ще се вижда дали токът идва по-рано или по-късно от часа, обявен от ЕРМ.</p>`;
+    return;
+  }
+  const late = L.filter(i => i.delay > 10), early = L.filter(i => i.delay < -10);
+  const avgLate = late.length ? late.reduce((s, i) => s + i.delay, 0) / late.length : 0;
+  const R = L.slice(-12).reverse();
+  const W = Math.max(300, body.clientWidth || 420), rowH = 26, left = 46, right = 52;
+  const mx = Math.max(30, ...R.map(i => Math.abs(i.delay)));
+  const x0 = left + (W - left - right) / 2, sc = (W - left - right) / 2 / mx;
+  let s = `<svg class="chart" viewBox="0 0 ${W} ${R.length * rowH + 30}"><g class="grid"><line x1="${x0}" x2="${x0}" y1="14" y2="${R.length * rowH + 18}"/></g>
+    <text x="${x0}" y="10" text-anchor="middle">обявен час</text><text x="${left}" y="10">по-рано</text><text x="${W - right}" y="10" text-anchor="end">по-късно</text>`;
+  R.forEach((i, k) => {
+    const y = 20 + k * rowH, xv = x0 + i.delay * sc;
+    const col = i.delay > 10 ? "var(--s4)" : "var(--ink-3)";
+    const t = `<b>${fDT(i.b)}</b><br>Обявено: ${fT(i.exp0)} · реално ≈ ${fT(i.e)}${i.prec ? ` (±${i.prec} мин)` : ""}<br>${i.delay > 0 ? "+" : ""}${i.delay} мин`;
+    s += `<text x="0" y="${y + 12}" class="lab">${fD(i.b)}</text>
+      <line x1="${x0}" x2="${xv}" y1="${y + 8}" y2="${y + 8}" stroke="${col}" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="${xv}" cy="${y + 8}" r="5" fill="${col}" stroke="var(--surface)" stroke-width="2"/>
+      <text x="${W}" y="${y + 12}" text-anchor="end" class="lab">${i.delay === 0 ? "0" : (i.delay > 0 ? "+" : "−") + fH(Math.abs(i.delay) / 60).replace(" мин", " м")}</text>
+      <rect class="hit" x="0" y="${y}" width="${W}" height="${rowH}" data-tip="${esc(t)}"/>`;
+  });
+  s += `</svg>`;
+  body.innerHTML = `<div class="kpis" style="margin:0 0 12px;grid-template-columns:1fr 1fr">
+      <div><div class="muted small">По-късно от обявеното</div><div style="font-size:24px;font-weight:800" class="num">${late.length}<small class="muted" style="font-size:14px"> от ${L.length}</small></div></div>
+      <div><div class="muted small">Средно закъснение</div><div style="font-size:24px;font-weight:800" class="num">${late.length ? fH(avgLate / 60) : "—"}</div></div></div>
+      ${s}<p class="note">„Реално“ е моментът, в който прекъсването изчезва от сайта на ЕРМ (точност ± половин интервал между проверките). Ранно идване: ${early.length}.</p>`;
+  bindTips(body);
+}
+
+/* ---------------- календар ---------------- */
+function dayHours() {
+  const m = {};
+  for (const i of MAIN) {
+    let d = startOfDay(i.b);
+    while (d < i.e) {
+      const n = new Date(+d + DAY), a = Math.max(+d, +i.b), b = Math.min(+n, +i.e);
+      if (b > a) { const k = dayKey(d); (m[k] ||= {h: 0, n: 0, p: 0}); m[k].h += (b - a) / H; m[k].n++; if (i.planned) m[k].p++; }
+      d = n;
+    }
+  }
+  return m;
+}
+function renderCal() {
+  const body = $("#c-cal .body");
+  const dh = dayHours(), first = D.first_check ? startOfDay(P(D.first_check)) : startOfDay(NOW);
+  const since = Math.ceil((NOW - first) / DAY / 7) + 1;
+  const fit = Math.floor(((body.clientWidth || 600) - 26) / 16);
+  const weeks = Math.min(53, Math.max(Math.min(fit, 20), since));
+  const end = startOfDay(NOW), endMon = new Date(+end - ((end.getDay() + 6) % 7) * DAY);
+  const start = new Date(+endMon - (weeks - 1) * 7 * DAY);
+  const c = 13, g = 3, left = 26, top = 18;
+  const W = left + weeks * (c + g), Ht = top + 7 * (c + g);
+  let s = `<svg class="chart" viewBox="0 0 ${W} ${Ht}" width="${W}" height="${Ht}" style="width:${W}px;max-width:none">`;
+  ["Пн", "", "Ср", "", "Пт", "", "Нд"].forEach((t, r) => t && (s += `<text x="0" y="${top + r * (c + g) + 10}">${t}</text>`));
+  let lastM = -1;
+  for (let w = 0; w < weeks; w++) {
+    for (let r = 0; r < 7; r++) {
+      const d = new Date(+start + (w * 7 + r) * DAY);
+      if (d > end) continue;
+      if (r === 0 && d.getMonth() !== lastM && d.getDate() <= 7) { lastM = d.getMonth(); s += `<text x="${left + w * (c + g)}" y="11">${MON[lastM]}</text>`; }
+      const x = left + w * (c + g), y = top + r * (c + g), k = dayKey(d), v = dh[k];
+      const checks = D.checks.per_day[k] || 0;
+      let fill, extra = "", t;
+      if (d < first) { fill = "transparent"; extra = `stroke="var(--line)" stroke-dasharray="2 2"`; t = `${fDY(d)}<br><span style="opacity:.75">преди началото на наблюдението</span>`; }
+      else if (v) { const k5 = v.h < 1 ? 1 : v.h < 3 ? 2 : v.h < 6 ? 3 : v.h < 10 ? 4 : 5; fill = `var(--s${k5})`;
+        t = `<b>${WDL[d.getDay()]}, ${fDY(d)}</b><br>${fH(v.h)} без ток · ${v.n} прекъсв.${v.p ? ` (${v.p} планир.)` : ""}`; }
+      else { fill = "var(--s0)"; t = `<b>${WDL[d.getDay()]}, ${fDY(d)}</b><br>${checks ? "без прекъсвания" : "няма успешни проверки"}`;
+        if (!checks && d < end) extra = `stroke="var(--warn)" stroke-width="1"`; }
+      if (v && v.p === v.n) extra = `stroke="var(--plan)" stroke-width="1.5"`;
+      s += `<rect class="cal-cell" x="${x}" y="${y}" width="${c}" height="${c}" rx="3" fill="${fill}" ${extra} data-tip="${esc(t)}"/>`;
+    }
+  }
+  s += `</svg>`;
+  body.innerHTML = `<div class="scrollx" id="calscroll">${s}</div>
+    <div class="legend"><span class="muted">Часове без ток на ден:</span>
+      <span class="ramp"><i style="background:var(--s0)"></i>0</span><span class="ramp"><i style="background:var(--s1)"></i>&lt;1</span><span class="ramp"><i style="background:var(--s2)"></i>1–3</span><span class="ramp"><i style="background:var(--s3)"></i>3–6</span><span class="ramp"><i style="background:var(--s4)"></i>6–10</span><span class="ramp"><i style="background:var(--s5)"></i>10+</span>
+      <span class="ramp"><i style="background:var(--s3);outline:1.5px solid var(--plan);outline-offset:-1.5px"></i>само планирани</span>
+      <span class="ramp"><i style="border:1px dashed var(--line)"></i>преди наблюдението</span></div>`;
+  bindTips(body);
+  const sc = $("#calscroll"); sc.scrollLeft = sc.scrollWidth;
+}
+
+/* ---------------- час и ден ---------------- */
+function bars(el, data, opt) {
+  const W = Math.max(280, el.clientWidth || 560), Hh = 160, top = 16, bot = 22, left = 4;
+  const n = data.length, bw = (W - left) / n, mx = Math.max(1, ...data.map(d => d.v));
+  let s = `<svg class="chart" viewBox="0 0 ${W} ${Hh}" role="img" aria-label="${esc(opt.aria)}"><g class="grid"><line x1="0" x2="${W}" y1="${Hh - bot}" y2="${Hh - bot}"/></g>`;
+  data.forEach((d, k) => {
+    const h = d.v / mx * (Hh - top - bot), x = left + k * bw;
+    if (d.v) s += `<path d="M${x + 2},${Hh - bot} v${-Math.max(0, h - 4)} q0,-4 4,-4 h${Math.max(0, bw - 12)} q4,0 4,4 v${Math.max(0, h - 4)} z" fill="${opt.color}"/>`;
+    if (d.v && (d.v === mx || n <= 7)) s += `<text x="${x + bw / 2}" y="${Hh - bot - h - 4}" text-anchor="middle" class="lab">${d.v}</text>`;
+    if (k % (W < 420 && n > 7 ? 6 : opt.every || 1) === 0) s += `<text x="${x + bw / 2}" y="${Hh - 6}" text-anchor="middle">${d.l}</text>`;
+    s += `<rect class="hit" x="${x}" y="0" width="${bw}" height="${Hh}" data-tip="${esc(d.t)}"/>`;
+  });
+  el.innerHTML = s + `</svg>`;
+  bindTips(el);
+}
+function renderHour() {
+  const L = inPeriod(MAIN).filter(i => !i.planned), c = Array(24).fill(0);
+  L.forEach(i => c[i.b.getHours()]++);
+  const body = $("#c-hour .body");
+  if (!L.length) { body.innerHTML = `<div class="empty">Няма непланирани прекъсвания в този период.</div>`; return; }
+  bars(body, c.map((v, h) => ({v, l: pad(h), t: `<b>${pad(h)}:00–${pad(h)}:59</b><br>${v} непланирани прекъсвания`})), {color: "var(--unpl)", every: 3, aria: "Начало на непланираните прекъсвания по час"});
+  body.insertAdjacentHTML("beforeend", `<p class="note">Час, в който започват непланираните прекъсвания.</p>`);
+}
+function renderWd() {
+  const L = inPeriod(MAIN).filter(i => !i.planned), c = Array(7).fill(0);
+  L.forEach(i => c[(i.b.getDay() + 6) % 7]++);
+  const body = $("#c-wd .body");
+  if (!L.length) { body.innerHTML = `<div class="empty">Няма непланирани прекъсвания в този период.</div>`; return; }
+  const names = ["Пн","Вт","Ср","Чт","Пт","Сб","Нд"], full = ["понеделник","вторник","сряда","четвъртък","петък","събота","неделя"];
+  bars(body, c.map((v, k) => ({v, l: names[k], t: `<b>${full[k]}</b><br>${v} непланирани прекъсвания`})), {color: "var(--unpl)", aria: "Непланирани прекъсвания по дни"});
+}
+
+/* ---------------- съседни села ---------------- */
+function renderCompare(m = "n") {
+  const body = $("#c-cmp .body"), L = inPeriod(ALL), agg = {};
+  const tpsBy = {};
+  for (const [c, t] of Object.entries(D.tps)) { const k = short(t.city || "?"); tpsBy[k] = (tpsBy[k] || 0) + 1; }
+  for (const i of L) { const k = short(i.city); (agg[k] ||= {n: 0, h: 0, u: 0}); agg[k].n++; agg[k].h += hoursIn(i); if (!i.planned) agg[k].u++; }
+  for (const k of Object.keys(tpsBy)) agg[k] ||= {n: 0, h: 0, u: 0};
+  const rows = Object.entries(agg).sort((a, b) => b[1][m] - a[1][m]);
+  if (!rows.length) { body.innerHTML = `<div class="empty">Няма данни за този период.</div>`; return; }
+  const mx = Math.max(1e-9, ...rows.map(r => r[1][m])), me = short(D.city);
+  body.innerHTML = `<div class="cmp">${rows.map(([k, v]) => `<div class="row ${k === me ? "me" : ""}" data-tip="${esc(`<b>${k}</b><br>${v.n} прекъсвания (${v.u} непланирани)<br>${fH(v.h)} без ток`)}">
+      <span>${esc(k)}</span><span class="track"><span class="fill" style="display:block;width:${Math.max(v[m] ? 3 : 0, v[m] / mx * 100)}%"></span></span>
+      <span class="val num">${m === "h" ? fHs(v.h) + " ч" : v.n}</span></div>`).join("")}</div>
+    <p class="note">Селата от община ${esc(D.obstina)}, които се захранват от същата мрежа. Брой ${m === "h" ? "часове без ток" : "прекъсвания"} за избрания период (поне в част от селото).</p>`;
+  bindTips(body);
+}
+
+/* ---------------- списък ---------------- */
+let listShown = 12;
+function renderList() {
+  const body = $("#c-list .body"), L = inPeriod(MAIN).slice().reverse();
+  if (!L.length) { body.innerHTML = `<div class="empty">Няма прекъсвания в избрания период.</div>`; return; }
+  const item = i => {
+    const s = scope(i), w = i.w;
+    const wc = (!w || i.planned) ? "" : w.bad ? `<span class="chip bad">${icon(w.storm ? "zap" : w.snow ? "cloud" : "wind")} ${w.storm ? "буря" : w.snow ? "сняг" : w.gust >= D.thresholds.gust ? "вятър " + w.gust + " км/ч" : "дъжд " + w.rain + " мм"}</span>`
+      : `<span class="chip">${icon("sun")} спокойно време</span>`;
+    const dl = i.delay != null && Math.abs(i.delay) > 10 ? `<span class="chip ${i.delay > 0 ? "bad" : ""}">${i.delay > 0 ? "+" + fH(i.delay / 60) + " след обявеното" : fH(-i.delay / 60) + " по-рано"}</span>` : "";
+    return `<div class="item"><div class="ico ${i.planned ? "p" : "u"}">${icon(i.planned ? "cal" : "zapoff")}</div>
+      <div><div class="t">${WDL[i.b.getDay()][0].toUpperCase() + WDL[i.b.getDay()].slice(1)}, ${fDY(i.b)} · ${fT(i.b)}–${i.ongoing ? "…" : fT(i.e)}</div>
+      <div class="m">${i.ongoing ? `<span class="chip live">${icon("zapoff")} продължава</span>` : ""}<span class="chip"><i class="sw ${i.planned ? "p" : "u"}"></i>${i.planned ? "планирано" : "непланирано"}</span>
+      <span class="chip">${icon("home")} ${s.whole ? "цялото село" : `${s.k} от ${s.n} ТП`}</span>${wc}${dl}</div></div>
+      <div class="dur num">${fH(i.h)}<small>${i.ongoing ? "досега" : "без ток"}</small></div></div>`;
+  };
+  body.innerHTML = `<div class="inc">${L.slice(0, listShown).map(item).join("")}</div>${L.length > listShown ? `<button class="more" id="more">Покажи още (${L.length - listShown})</button>` : ""}`;
+  const mb = $("#more"); if (mb) mb.onclick = () => { listShown += 20; renderList(); };
+}
+
+/* ---------------- бележки ---------------- */
+function renderFoot() {
+  const f = P(D.first_check);
+  $("#foot").innerHTML = `<h4>Как се събират данните</h4><ul>
+    <li>Скрипт проверява картата с прекъсвания на ЕРМ Запад на всеки 30 минути, а докато тече прекъсване — на всеки 15. Наблюдение от ${f ? fDY(f) : "—"}; успешни проверки: ${D.checks.ok} от ${D.checks.total}.</li>
+    <li>Краят на прекъсването е моментът, в който то изчезва от сайта на ЕРМ (± половин интервал между проверките). Много кратки прекъсвания може да не бъдат засечени.</li>
+    <li>Включени са само прекъсванията, публикувани от ЕРМ. „Цялото село“ = засегнати поне 85% от известните ${MAIN_TPS.length} трафопоста в ${esc(title(D.city))}.</li>
+    <li>„Спокойно време“: 2 ч преди до 1 ч след началото без пориви ≥ ${D.thresholds.gust} км/ч, валеж ≥ ${D.thresholds.rain} мм, сняг или гръмотевици (данни: Open-Meteo).</li>
+    <li>Карта: © OpenStreetMap, CARTO, Esri. Генерирано: ${fDT(NOW)}.</li></ul>`;
+}
+addEventListener("resize", (() => { let t; return () => { clearTimeout(t); t = setTimeout(() => D && (renderWeek(), renderPromise(), renderCal(), renderHour(), renderWd()), 200); }; })());
+</script>
+</body>
+</html>
