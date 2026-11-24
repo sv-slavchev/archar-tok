@@ -163,12 +163,32 @@ def has_open(rows):
                for r in rows.values())
 
 
+def minutes_since_last_run():
+    if not os.path.exists(RUNS):
+        return None
+    with open(RUNS, encoding="utf-8") as f:
+        lines = [l for l in f.read().splitlines() if l.strip()]
+    if len(lines) < 2:
+        return None
+    try:
+        last = datetime.strptime(lines[-1].split(",")[0], "%d.%m.%Y %H:%M").replace(tzinfo=TZ)
+    except ValueError:
+        return None
+    return (datetime.now(TZ) - last).total_seconds() / 60
+
+
+NORMAL_MIN = 28   # без прекъсване: питаме сайта най-много веднъж на ~30 мин
+
+
 def main():
-    # --if-open: допълнителна (бърза) проверка — само ако в момента тече прекъсване
-    if "--if-open" in sys.argv and not has_open(load()):
-        print("Няма текущо прекъсване — допълнителната проверка се пропуска.")
-        set_output("skipped", "true")
-        return
+    # --auto: пуска се на всеки 15 мин; пита сайта винаги, докато тече прекъсване,
+    # иначе само ако от последната проверка са минали поне NORMAL_MIN минути.
+    if "--auto" in sys.argv and not has_open(load()):
+        m = minutes_since_last_run()
+        if m is not None and m < NORMAL_MIN:
+            print(f"Няма текущо прекъсване, последна проверка преди {m:.0f} мин — пропускам.")
+            set_output("skipped", "true")
+            return
     set_output("skipped", "false")
     ts = now_str()
     status, recs = fetch()
